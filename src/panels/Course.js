@@ -10,14 +10,15 @@ import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import persik from '../img/persik.png';
 import './Persik.css';
 import {loadCourse} from '../utils';
+import { useEffect } from 'react/cjs/react.production.min';
 const osName = platform();
 
 function CourseContent(props){
+    console.log('CourseContent props:',props);
     function callback(name,index){
-        return <Div></Div>
+    return <Div>{name}</Div>
     }
     const data = props.data;
-    console.log('data',data);
     if(data==={}) return (
         <Div>
             Error with loading...(
@@ -29,47 +30,56 @@ function CourseContent(props){
         </Div>
     );
 }
-const Course = props => {
-    const [content,setContent] = React.useState({})
-    var __debug__ = !false;
-    var course;
-    async function get(){
-        if(__debug__) course="js";
-        else course = await bridge.send('VKWebAppStorageGet',{keys:['course']})
-        if(typeof course==="object") course=course.keys[0].value;
-        console.log('course',course)
+class Course extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            content:<Div>Error with loading((</Div>
+        };
     }
-    get();
-    console.log(props); //FIXME: debug
-    var rawcontent = null;
-    async function updateContent(){
-        try{
-            rawcontent = await loadCourse(course)
-            rawcontent = await rawcontent.json() //JSON.parse response
-            console.log(rawcontent)
-            //setContent(rawcontent)
+    componentWillMount(){
+        var __debug__ = !false;
+        var course; //name of course, what required js f.e
+        async function get(){
+            if(__debug__) course="js";
+            else course = await bridge.send('VKWebAppStorageGet',{keys:['course']})
+            if(typeof course==="object") course=course.keys[0].value;
+            console.log('course',course)
         }
-        catch(e){
-            console.warn(e);
+        get();
+        //now we have name of course (js)
+        //It's time to get contents
+        var responseJSON = {}; //default value (Error with loading...)
+        const updateContent=async ()=>{
+            try{
+                responseJSON = await loadCourse(course)
+                responseJSON = await responseJSON.json() //JSON.parse response
+                //console.log('responseJSON',responseJSON)
+                this.setState({content:<CourseContent data={responseJSON} />})
+            }
+            catch(e){
+                console.warn(e);
+            }
         }
+        updateContent();
     }
-    updateContent(content);
-    return (
-        <Panel id={props.id}>
-		<PanelHeader
-			left={<PanelHeaderButton onClick={props.go} data-to="home">
-				{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
-			</PanelHeaderButton>}
-		>
-			
-		</PanelHeader>
-        <Div>
-            <CourseContent data={content} />
-        </Div>
-		<img className="Persik" src={persik} alt="Persik The Cat"/>
-	</Panel>
-    );
+    render(){
+        return (
+            <Panel id={this.props.id}>
+            <PanelHeader
+                left={<PanelHeaderButton onClick={this.props.go} data-to="home">
+                    {osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
+                </PanelHeaderButton>}
+            >
+                
+            </PanelHeader>
+            <Div>
+                {this.state.content}
+            </Div>
+            <img className="Persik" src={persik} alt="Persik The Cat"/>
+        </Panel>
+        );
+    }
 }
-
 
 export default Course;
