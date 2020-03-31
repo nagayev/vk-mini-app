@@ -12,15 +12,32 @@ import './Persik.css';
 import {loadCourse} from '../utils';
 const osName = platform();
 
+function CourseContent(props){
+    function callback(name,index){
+        return <Div></Div>
+    }
+    const data = props.data;
+    console.log('data',data);
+    if(data==={}) return (
+        <Div>
+            Error with loading...(
+        </Div>
+    );
+    else return (
+        <Div>
+            {data.titles.map(callback)}
+        </Div>
+    );
+}
 const Course = props => {
-    const [content,setContent] = React.useState(<Div>Error with loading :(</Div>)
-    var __debug__ = false;
+    const [content,setContent] = React.useState({})
+    var __debug__ = !false;
     var course;
     async function get(){
         if(__debug__) course="js";
         else course = await bridge.send('VKWebAppStorageGet',{keys:['course']})
-        console.log('course',course)
         if(typeof course==="object") course=course.keys[0].value;
+        console.log('course',course)
     }
     get();
     console.log(props); //FIXME: debug
@@ -34,7 +51,6 @@ const Course = props => {
         }
         catch(e){
             console.warn(e);
-            rawcontent = {error:400}
         }
     }
     updateContent(content);
@@ -48,7 +64,7 @@ const Course = props => {
 			
 		</PanelHeader>
         <Div>
-            {content}
+            <CourseContent data={content} />
         </Div>
 		<img className="Persik" src={persik} alt="Persik The Cat"/>
 	</Panel>
