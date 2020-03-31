@@ -7,10 +7,10 @@ import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import bridge from '@vkontakte/vk-bridge';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
-import persik from '../img/persik.png';
+//import persik from '../img/persik.png';
 import './Persik.css';
 import {loadCourse} from '../utils';
-import { useEffect } from 'react/cjs/react.production.min';
+//import { useEffect } from 'react/cjs/react.production.min';
 const osName = platform();
 
 function CourseContent(props){

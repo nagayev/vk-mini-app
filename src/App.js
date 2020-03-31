@@ -5,7 +5,7 @@ import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenS
 import '@vkontakte/vkui/dist/vkui.css';
 
 import Home from './panels/Home';
-import Persik from './panels/Persik';
+//import Persik from './panels/Persik';
 import Course from './panels/Course';
 
 const App = () => {
