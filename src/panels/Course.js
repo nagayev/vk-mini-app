@@ -13,7 +13,7 @@ import {loadCourse} from '../utils';
 const osName = platform();
 
 const Course = props => {
-    var __debug__ = true;
+    var __debug__ = false;
     var course;
     async function get(){
         if(__debug__) course="js";
