@@ -13,6 +13,7 @@ import {loadCourse} from '../utils';
 const osName = platform();
 
 const Course = props => {
+    const [content,setContent] = React.useState(<Div>Error with loading :(</Div>)
     var __debug__ = false;
     var course;
     async function get(){
@@ -23,15 +24,17 @@ const Course = props => {
     }
     get();
     console.log(props); //FIXME: debug
-    var content = null;
+    var rawcontent = null;
     async function updateContent(){
         try{
-            content = JSON.parse(await loadCourse(course));
-            console.log(content);
+            rawcontent = await loadCourse(course)
+            rawcontent = await rawcontent.json() //JSON.parse response
+            console.log(rawcontent)
+            //setContent(rawcontent)
         }
         catch(e){
             console.warn(e);
-            content = {error:400}
+            rawcontent = {error:400}
         }
     }
     updateContent(content);
@@ -42,10 +45,10 @@ const Course = props => {
 				{osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
 			</PanelHeaderButton>}
 		>
-			Course
+			
 		</PanelHeader>
         <Div>
-
+            {content}
         </Div>
 		<img className="Persik" src={persik} alt="Persik The Cat"/>
 	</Panel>
