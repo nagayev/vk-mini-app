@@ -38,13 +38,13 @@ class Course extends React.Component{
         };
     }
     componentWillMount(){
-        var __debug__ = !false;
+        var __debug__ = false;
         var course; //name of course, what required js f.e
         async function get(){
             if(__debug__) course="js";
             else course = await bridge.send('VKWebAppStorageGet',{keys:['course']})
             if(typeof course==="object") course=course.keys[0].value;
-            console.log('course',course)
+            //console.log('course',course)
         }
         get();
         //now we have name of course (js)
@@ -76,7 +76,7 @@ class Course extends React.Component{
             <Div>
                 {this.state.content}
             </Div>
-            <img className="Persik" src={persik} alt="Persik The Cat"/>
+        {/*<img className="Persik" src={persik} alt="Persik The Cat"/>*/ }
         </Panel>
         );
     }
