@@ -17,7 +17,9 @@ const Course = props => {
     var course;
     async function get(){
         if(__debug__) course="js";
-        else course = await bridge.send('VKWebAppStorageGet',{keys:['course']}).keys[0].value 
+        else course = await bridge.send('VKWebAppStorageGet',{keys:['course']})
+        console.log('course',course)
+        if(typeof course==="object") course=course.keys[0].value;
     }
     get();
     console.log(props); //FIXME: debug
